@@ -1,28 +1,24 @@
-import {
-  Stack,
-  StackProps,
-  aws_ec2 as ec2,
-  aws_ecs as ecs,
-  aws_elasticloadbalancingv2 as elbv2,
-  aws_logs as log,
-  aws_certificatemanager as acm,
-  aws_route53 as route53,
-  aws_route53_targets as route53Targets,
-} from "aws-cdk-lib";
-import { Construct } from "constructs";
+import * as cdk from "@aws-cdk/core";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as certm from "@aws-cdk/aws-certificatemanager";
+import * as elbv2 from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as route53 from "@aws-cdk/aws-route53";
+import * as ecs from "@aws-cdk/aws-ecs";
+import * as log from "@aws-cdk/aws-logs";
+import * as route53Targets from "@aws-cdk/aws-route53-targets";
 
 /**
  * 👇 Domain name
  */
-const domainName = "nikolatec.com"
+ const domainName = "nikolatec.com"
 
-/**
- * 👇 Prefix for all resources
- */
-const projectName = "backend-api";
+ /**
+  * 👇 Prefix for all resources
+  */
+ const projectName = "backend-api";
 
-export class AwsCdkFargateStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+export class AwsCdkEc2Stack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     /**
@@ -87,8 +83,7 @@ export class AwsCdkFargateStack extends Stack {
     /**
      * 👇 Create a certificate
      */
-    const cert = new acm.DnsValidatedCertificate(this, `${projectName}-certificate`, {
-      certificateName: `${projectName}-certificate`,
+    const cert = new certm.DnsValidatedCertificate(this, `${projectName}-certificate`, {
       domainName: domainName,
       hostedZone,
       region: "us-east-1",
